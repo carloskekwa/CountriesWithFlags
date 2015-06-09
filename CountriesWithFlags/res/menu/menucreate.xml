@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+     <item android:id="@+id/search"
+          android:title="Search" 
+          android:icon="@drawable/iconsearch"
+            android:showAsAction="always"/>
+    
+     
+    <item android:id="@+id/create"
+          android:title="Create" 
+          android:icon="@drawable/iconcheck"
+            android:showAsAction="always"/>
+ 
+    
+   
+</menu>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.14"
+        android:paddingLeft="@dimen/activity_horizontal_margin" >
+
+        <ImageView
+            android:id="@+id/imgalbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/subtitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/subtitle" />
+
+        <TextView
+            android:id="@+id/albumname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="18dp"
+            android:layout_toLeftOf="@+id/ago"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/albumname"
+            android:layout_below="@+id/albumname"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/ago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/subtitle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="94dp"
+            android:text="TextView" />
+
+        <ImageButton
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/subtitle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="34dp"
+            android:background="@drawable/directadd" />
+
+    </RelativeLayout>
+
+</LinearLayout>

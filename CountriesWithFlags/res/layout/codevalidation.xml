@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_width="match_parent"
+    android:layout_height="match_parent"
+        android:layout_row="0" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/validationcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="141dp"
+                android:ems="10"
+                android:inputType="phone"
+                android:text="Enter Code Here"
+                android:maxLength="10" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textstatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/validationcode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="78dp"
+                android:text="We've sent a verification code by SMS to " />
+
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textstatic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="28dp"
+                android:text="" />
+
+            <Button
+                android:id="@+id/decimal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/validationcode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="44dp"
+                android:text="Loop"
+                 />
+
+        </RelativeLayout>
+
+    </LinearLayout>

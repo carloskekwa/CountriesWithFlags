@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <info.androidhive.imageslider.helper.TouchImageView
+        android:id="@+id/imgDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/textView1"
+        android:scaleType="fitCenter" />
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/button_background"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp"
+        android:text="Close"
+        android:textColor="#ffffff" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/textView1" >
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/seen"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black"
+        android:text="TextView"
+        android:textColor="@color/Purple" />
+
+    <TextView
+        android:id="@+id/seen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ago"
+        android:layout_toRightOf="@+id/relativeLayout1"
+        android:background="@color/black"
+        android:text="TextView"
+        android:textColor="@color/Purple" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnClose"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/seen"
+        android:textColor="@color/Purple" 
+          android:background="@color/black"
+        android:text="TextView"/>
+
+</RelativeLayout>
