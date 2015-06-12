@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/http-core-4.1.jar"/>
 	<classpathentry kind="lib" path="libs/httpclient-4.1.jar"/>
 	<classpathentry kind="lib" path="libs/httpmime-4.1.jar"/>
+	<classpathentry kind="lib" path="/Users/carloskekwa/Documents/CountriesWithFlags/CountriesWithFlags/libs/picasso-2.5.2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -1,5 +1,6 @@
 package com.code.home;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -8,7 +9,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.code.loop.R;
 import com.code.loop.Utilities;
@@ -26,14 +30,17 @@ public class Home extends Activity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			Utilities.dialog = ProgressDialog.show(Home.this, "", "Loading...",
 					true);
-			HomeAdapter mAdapter = new HomeAdapter(this);
+			final HomeAdapter mAdapter = new HomeAdapter(this);
 			lv = (ListView) findViewById(R.id.listView);
 			
 			LoaderHome loadhome = new LoaderHome(this, mAdapter,lv);
 			lv.setAdapter(mAdapter);
 			loadhome.execute();
+			
+		
+			
 		} catch (Exception e) {
-
+				System.out.println("Error listview");
 		}
 	}
 

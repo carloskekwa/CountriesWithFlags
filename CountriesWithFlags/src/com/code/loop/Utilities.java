@@ -1,5 +1,7 @@
 package com.code.loop;
 
+import info.androidhive.imageslider.GridViewActivity;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,24 +53,24 @@ public class Utilities {
 	public static String deviceid = "";
 	public static String key = "";
 	public static ProgressDialog dialog = null;// dialog box
-	
+	private static int REQUEST_CAMERA = 501;
+	private static int SELECT_FILE = 502;
+
 	public static String GetCountryZipCode(String ssid) {
 		Locale loc = new Locale("", ssid);
 
 		return loc.getDisplayCountry().trim();
 	}
 
-	
 	/*
 	 * Ask button
-	 * 
 	 */
 	@SuppressWarnings("unused")
-	public static void AlertMessage(final Context context,String Message,final Intent i,String leftbutton,String rightbutton,String title) {
+	public static void AlertMessage(final Context context, String Message,
+			final Intent i, String leftbutton, String rightbutton, String title) {
 		AlertDialog alert = null;
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setMessage(
-				Message)
+		builder.setMessage(Message)
 				.setTitle(title)
 				.setCancelable(false)
 				.setPositiveButton(rightbutton,
@@ -76,116 +78,74 @@ public class Utilities {
 							public void onClick(
 									@SuppressWarnings("unused") final DialogInterface dialog,
 									@SuppressWarnings("unused") final int id) {
-								
-								((Activity)context).startActivity(i);
+
+								((Activity) context).startActivity(i);
 							}
 						})
-				.setNegativeButton(leftbutton, new DialogInterface.OnClickListener() {
-					public void onClick(final DialogInterface dialog,
-							@SuppressWarnings("unused") final int id) {
-						
-						dialog.cancel();
-					
-					}
-				});
-		
+				.setNegativeButton(leftbutton,
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog,
+									@SuppressWarnings("unused") final int id) {
+
+								dialog.cancel();
+
+							}
+						});
+
 		alert = builder.create();
 		alert.show();
-		
-		
+
 	}
+
 	/*
 	 * informative alert
 	 */
-	public static void InformativeMessage(String s,String Title,Context context,String buttontxt) {
+	public static void InformativeMessage(String s, String Title,
+			Context context, String buttontxt) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(Title);
 		builder.setMessage(s);
 		builder.setPositiveButton(buttontxt,
 				new DialogInterface.OnClickListener() {
-			public void onClick(
-					@SuppressWarnings("unused") final DialogInterface dialog,
-					@SuppressWarnings("unused") final int id) {
-				dialog.dismiss();
-			}
-		});
+					public void onClick(
+							@SuppressWarnings("unused") final DialogInterface dialog,
+							@SuppressWarnings("unused") final int id) {
+						dialog.dismiss();
+					}
+				});
 		builder.create();
 		builder.show();
 
 	}
-	
-	public static String postData(List<NameValuePair> nameValuePairs,String url) {
-	    // Create a new HttpClient and Post Header
-	    HttpClient httpclient = new DefaultHttpClient();
-	    System.out.println(url);
-	    HttpPost httppost = new HttpPost(url);
-	    System.out.println("postData@!");
-	    HttpResponse response = null;
-	    try {
-	    	// Add your data
-	    	//authorization
-	    	if (!Utilities.key.equals(""))
-	    	httppost.setHeader("Authorization", "Token " +  Utilities.key);
-        System.out.println("postdata");
+/*
+ * Post call
+ */
+	public static String postData(List<NameValuePair> nameValuePairs, String url) {
+		// Create a new HttpClient and Post Header
+		HttpClient httpclient = new DefaultHttpClient();
+		System.out.println(url);
+		HttpPost httppost = new HttpPost(url);
+		System.out.println("postData@!");
+		HttpResponse response = null;
+		try {
+			// Add your data
+			// authorization
+			if (!Utilities.key.equals(""))
+				httppost.setHeader("Authorization", "Token " + Utilities.key);
+			System.out.println("postdata");
 			if (nameValuePairs != null)
-	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-	        // Execute HTTP Post Request
-	         response = httpclient.execute(httppost);
-	        
-	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	    }
-	    HttpEntity entity = response.getEntity();
-	    String responseString = null;
-		try {
-			responseString = EntityUtils.toString(entity, "UTF-8");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println(responseString);
-	    return responseString;
-	} 
-	
-	
-	
-	public static String postMultipart(List<NameValuePair> nameValuePairs,String url) {
-	    // Create a new HttpClient and Post Header
-	    HttpClient httpclient = new DefaultHttpClient();
-	    System.out.println(url);
-	    HttpPost httppost = new HttpPost(url);
-	    System.out.println("postData@!Multipart");
-	    HttpResponse response = null;
-	    try {
-	    	// Add your data
-	    	//authorization
-	    	if (!Utilities.key.equals(""))
-	    	httppost.setHeader("Authorization", "Token " +  Utilities.key);
-        System.out.println("postdata");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			// Execute HTTP Post Request
+			response = httpclient.execute(httppost);
 
-        MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-        for (int i = 0 ; i < nameValuePairs.size();i++){
-        
-        multipartEntity.addPart(nameValuePairs.get(i).getName(), new StringBody(nameValuePairs.get(i).getValue()));
-        }
-        httppost.setEntity(multipartEntity);
-	        // Execute HTTP Post Request
-	         response = httpclient.execute(httppost);
-	        
-	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	    }
-	    HttpEntity entity = response.getEntity();
-	    String responseString = null;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
+		HttpEntity entity = response.getEntity();
+		String responseString = null;
 		try {
 			responseString = EntityUtils.toString(entity, "UTF-8");
 		} catch (ParseException e) {
@@ -195,47 +155,88 @@ public class Utilities {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.out.println(responseString);
-	    return responseString;
-	} 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		return responseString;
+	}
+
+	/*
+	 * post with multi-part
+	 */
+	public static String postMultipart(List<NameValuePair> nameValuePairs,
+			String url) {
+		// Create a new HttpClient and Post Header
+		HttpClient httpclient = new DefaultHttpClient();
+		System.out.println(url);
+		HttpPost httppost = new HttpPost(url);
+		System.out.println("postData@!Multipart");
+		HttpResponse response = null;
+		try {
+			// Add your data
+			// authorization
+			if (!Utilities.key.equals(""))
+				httppost.setHeader("Authorization", "Token " + Utilities.key);
+			System.out.println("postdata");
+
+			MultipartEntity multipartEntity = new MultipartEntity(
+					HttpMultipartMode.BROWSER_COMPATIBLE);
+			for (int i = 0; i < nameValuePairs.size(); i++) {
+
+				multipartEntity.addPart(nameValuePairs.get(i).getName(),
+						new StringBody(nameValuePairs.get(i).getValue()));
+			}
+			httppost.setEntity(multipartEntity);
+			// Execute HTTP Post Request
+			response = httpclient.execute(httppost);
+
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		}
+		HttpEntity entity = response.getEntity();
+		String responseString = null;
+		try {
+			responseString = EntityUtils.toString(entity, "UTF-8");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println(responseString);
+		return responseString;
+	}
+
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
 
-        int totalHeight = 0;
-        int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
+		int totalHeight = 0;
+		int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(),
+				MeasureSpec.AT_MOST);
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+			totalHeight += listItem.getMeasuredHeight();
+		}
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
-	
-	
-	public static String fetchGET(String urltofetch) throws InterruptedException {
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+		listView.requestLayout();
+	}
+	/*
+	 * Getcall
+	 */
+	public static String fetchGET(String urltofetch)
+			throws InterruptedException {
 
 		// --this is a fake method to generate json and take some time--
 		// --to simulate network loading--
@@ -243,19 +244,16 @@ public class Utilities {
 		String parsedString = "";
 
 		try {
-		
 
 			URL url = new URL(urltofetch);
 			System.out.println(url);
 			URLConnection conn = url.openConnection();
-			
-		  	
-		   
-		  	
-	System.out.println("postdata");
+
+			System.out.println("postdata");
 			HttpURLConnection httpConn = (HttpURLConnection) conn;
 			if (!Utilities.key.equals(""))
-			httpConn.setRequestProperty ("Authorization", "Token " + Utilities.key);
+				httpConn.setRequestProperty("Authorization", "Token "
+						+ Utilities.key);
 			httpConn.setAllowUserInteraction(false);
 			httpConn.setInstanceFollowRedirects(true);
 			httpConn.setRequestMethod("GET");
@@ -295,12 +293,12 @@ public class Utilities {
 			return "";
 		}
 	}
-	
-	
-	
-	
+
+	/*
+	 * get contacts of the phone
+	 */
 	public static Map<String, String> getAllContacts(ContentResolver cr) {
-		Map<String,String> contacts = new HashMap<String, String>();
+		Map<String, String> contacts = new HashMap<String, String>();
 		Cursor phones = cr.query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
 				null, null);
@@ -319,8 +317,36 @@ public class Utilities {
 		return contacts;
 	}
 
-	
-	
-	
-}
+	/*
+	 * select image from camera or the other one!
+	 */
+	public static void selectImage(final Context context) {
+		final CharSequence[] items = { "Take Photo", "Choose from Library",
+				"Cancel" };
 
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle("Add Photo!");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int item) {
+				if (items[item].equals("Take Photo")) {
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					((Activity) context).startActivityForResult(intent,
+							REQUEST_CAMERA);
+				} else if (items[item].equals("Choose from Library")) {
+					Intent intent = new Intent(
+							Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					intent.setType("image/*");
+					((Activity) context).startActivityForResult(
+							Intent.createChooser(intent, "Select File"),
+							SELECT_FILE);
+				} else if (items[item].equals("Cancel")) {
+					dialog.dismiss();
+				}
+			}
+		});
+		builder.show();
+	}
+
+}

@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="com.example.kifeljaw.MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+
+            <!-- Listview to display slider menu -->
+ 
+        <RelativeLayout
+            android:layout_width="318dp"
+            android:layout_height="match_parent"
+            android:background="@color/black" >
+
+            <ImageView
+                android:id="@+id/imgfbprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="34dp" />
+
+            <TextView
+                android:id="@+id/txtfbname
+"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imgfbprofile"
+                android:layout_alignTop="@+id/imgfbprofile"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@+id/imgfbprofile"
+                android:textColor="@color/Purple" />
+
+            <TextView
+                android:id="@+id/txtswitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/switchlocationshow"
+                android:text="Show your location"
+                android:textColor="@color/Purple" />
+
+            <TextView
+                android:id="@+id/txtdescriptionswitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/switchlocationshow"
+                android:layout_below="@+id/switchlocationshow"
+                android:text="This field is by default On.\n If you are in a bar or night, your name will be displayed when someone check who is in this bar.\n If you turn off this field, \n your place won&apos;t be shown and you won&apos;t be able to see people places"
+                android:textColor="@color/Purple" />
+
+            <Switch
+                android:id="@+id/switchlocationshow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtfbname
+"
+                android:layout_marginTop="82dp"
+                android:layout_toRightOf="@+id/txtswitch"
+                android:text="Switch" />
+
+        </RelativeLayout>
+
+</FrameLayout>

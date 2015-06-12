@@ -20,9 +20,14 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.code.loop.R;
 import com.code.loop.Utilities;
@@ -150,12 +155,21 @@ public class LoaderHome extends
 			mAdapter.add(p);
 			mapalbumslist.put(p.getAlbumid(), p);
 		}
+		
+		
+		
+		
 
 		if (products.size() == 0) {
 			((Home) mContext).setContentView(R.layout.home);
 		} else {
 			// mAdapter.setFooter("No More Items");
 		}
+		
+		
+		
+		
+		
 		Utilities.dialog.dismiss();
 		mAdapter.notifyDataSetChanged();
 		for (AlbumsList p : pendingalbum) {
@@ -170,22 +184,11 @@ public class LoaderHome extends
 		Utilities.dialog = ProgressDialog
 				.show(mContext, "", "Loading...", true);
 
-		/*
-		 * for (String a : accepted) { nameValuePairs = new
-		 * ArrayList<NameValuePair>(1); nameValuePairs.add(new
-		 * BasicNameValuePair("accepted", "1")); new RequestTask(nameValuePairs,
-		 * Utilities.urlapp + "albums/" + a + "/RSVP").execute(); }
-		 */
-
-		/*
-		 * for (String a : notaccepted) { nameValuePairs = new
-		 * ArrayList<NameValuePair>(1); nameValuePairs.add(new
-		 * BasicNameValuePair("accepted", "0")); new RequestTask(nameValuePairs,
-		 * Utilities.urlapp + "albums/" + a + "/RSVP").execute(); }
-		 */
 
 		Utilities.dialog.dismiss();
 		System.out.println("finishLoader Task OnPost");
+		
+		
 
 	}
 

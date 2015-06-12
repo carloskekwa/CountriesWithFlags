@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
+
 import org.apache.http.NameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class FullScreenViewActivity extends Activity {
 
 	private Utils utils;
 	private FullScreenImageAdapter adapter;
-	public  ViewPager viewPager;
+	public ViewPager viewPager;
 	private AlbumsList albumselected = null;
 	private int REQUEST_CAMERA = 501;
 	private int SELECT_FILE = 502;
@@ -40,10 +41,7 @@ public class FullScreenViewActivity extends Activity {
 	private ArrayList<String> urls = null;
 	public static int position = -1;
 	public static boolean flag = false;
-
-	
-	
-
+    private MenuDrawer mDrawer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,66 +58,63 @@ public class FullScreenViewActivity extends Activity {
 		} catch (Exception e) {
 
 		}
-		
-		
 
 		try {
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
-		
-			setContentView(R.layout.activity_fullscreen_view);
 
-			viewPager = (ViewPager) findViewById(R.id.pager);
+			setContentView(R.layout.activity_fullscreen_view);
 			
+	      
+			viewPager = (ViewPager) findViewById(R.id.pager);
+
 			utils = new Utils(getApplicationContext());
 
 			Intent i = getIntent();
 			int position = i.getIntExtra("position", 0);
-			setTitle((position + 1) + " of " + String.valueOf(GridViewActivity.urls.size() - 1));
-
+			setTitle((position + 1) + " of "
+					+ String.valueOf(GridViewActivity.urls.size() - 1));
+			FullScreenViewActivity.position = position;
 			adapter = new FullScreenImageAdapter(FullScreenViewActivity.this,
 					GridViewActivity.urls);
 
-			
 			viewPager.setAdapter(adapter);
-			
+
 			// displaying selected image first
 			viewPager.setCurrentItem(position);
-			
+
+			viewPager
+					.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+						@Override
+						public void onPageSelected(int position) {
+							System.out.println("increment!");
+							FullScreenViewActivity.position = position + 1;
+							setTitle(FullScreenViewActivity.position
+									+ " of "
+									+ String.valueOf(GridViewActivity.urls
+											.size() - 1));
+						}
+
+						@Override
+						public void onPageScrollStateChanged(int state) {
+						}
+
+						@Override
+						public void onPageScrolled(int position,
+								float positionOffset, int positionOffsetPixels) {
+						}
+					});
 
 			
-			viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			     @Override
-			     public void onPageSelected(int position) 
-			     {     
-			    	 System.out.println("increment");
-			    	 FullScreenViewActivity.position = position + 1;
-			    	 setTitle(FullScreenViewActivity.position + " of " +  String.valueOf(GridViewActivity.urls.size() - 1));
-			     }
-			     @Override
-			     public void onPageScrollStateChanged(int state)
-			     {
-			     }
-			     @Override
-			     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-			     {
-			     }
-			});
-			
-			
+
+	    
 			// "Loading...", true);
 
 		} catch (Exception e) {
 			System.out.println("Error in the onCreateFullScrenView");
 		}
 
-		
-		
-	   
 	}
-
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -130,13 +125,40 @@ public class FullScreenViewActivity extends Activity {
 			// Do stuff
 
 			return true;
+
+		case R.id.coverphoto:
+
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			new RequestTask(nameValuePairs, Utilities.urlapp
+					+ "albums/"
+					+ GridViewActivity.map.get(
+							GridViewActivity.urls
+									.get(FullScreenViewActivity.position))
+							.getId() + "/update_cover/").execute();
+			Utilities.dialog = ProgressDialog.show(FullScreenViewActivity.this,
+					"", "Updating your cover photo album...", true);
+			return true;
+		case R.id.share:
+
+			/*
+			 * Intent intent = new Intent();
+			 * intent.setAction(Intent.ACTION_SEND);
+			 * 
+			 * //change the !type of data you need to share, // for image use
+			 * "image/*" intent.setType("text/plain");
+			 * System.out.println("FullScreenViewActivity.position:" +
+			 * FullScreenViewActivity.position);
+			 * intent.putExtra(Intent.EXTRA_TEXT,
+			 * GridViewActivity.map.get(GridViewActivity
+			 * .urls.get(position)).getThumb_path());
+			 * startActivity(Intent.createChooser(intent, "Share"));
+			 */
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 
 	}
-	
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -144,8 +166,6 @@ public class FullScreenViewActivity extends Activity {
 
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	
 
 	class RequestTask extends AsyncTask<String, String, String> {
 
@@ -161,11 +181,12 @@ public class FullScreenViewActivity extends Activity {
 		@Override
 		protected String doInBackground(String... uri) {
 			// calling the database.
-			System.out.println(Utilities.urlapp + "albums/"
-					+ albumselected.getAlbumid() + "/details/");
+
 			try {
 				// here
-				response = Utilities.fetchGET(this.url);
+				List<NameValuePair> namevaluepairs = new ArrayList<NameValuePair>();
+				response = Utilities.postData(namevaluepairs,
+						this.url);
 
 				System.out.println("response:" + response);
 			} catch (Exception e) {
@@ -181,48 +202,8 @@ public class FullScreenViewActivity extends Activity {
 			super.onPostExecute(result);
 			// Do anything with response..
 
-			JSONObject a = null;
-			try {
-				a = new JSONObject(response);
-				System.out.println("response2: " + response);
-				JSONArray c = a.getJSONArray("photo_list");
-
-				for (int i = 0; i < c.length(); i++) {
-					JSONObject json = c.getJSONObject(i);
-					JSONObject d = json.getJSONObject("dimensions");
-					String height = d.getString("height");
-					String width = d.getString("width");
-
-					map.put(json.getString("thumb_path"),
-							new PhotosList(json.getString("_id"), json
-									.getString("_creatorphone"), json
-									.getString("filename"), json
-									.getString("caption"), height, width, json
-									.getString("thumb_path"), json
-									.getString("modifiedOn_epoch"), json
-									.getString("createdOn_epoch"),0));
-					urls.add(json.getString("thumb_path"));
-				}
-
-				// displaying selected image first
-				// viewPager.setCurrentItem(position);
-				// LoaderTask loadhome = new LoaderTask(this, adapter,
-				// albumselected);
-
-				// loadhome.execute();
-
-				Utilities.dialog.dismiss();
-
-			} catch (JSONException e) {
-				Utilities.dialog.dismiss();
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Utilities.dialog.dismiss();
 		}
 	}
 
-	
-	
-
-	  
 }
