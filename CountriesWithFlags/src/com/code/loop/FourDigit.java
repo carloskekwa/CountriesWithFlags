@@ -245,6 +245,7 @@ public class FourDigit extends Activity {
 					}
 	        		try {
 						Utilities.key = a.getString("key");
+						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -252,6 +253,7 @@ public class FourDigit extends Activity {
 	        		
 	        		System.out.println("key: " + Utilities.key);
 	        		if (Utilities.key != ""){
+	        			Utilities.phone = phone;
 	        			Intent i = new Intent(context,com.code.home.Home.class);
 	        			startActivity(i);
 	        		}

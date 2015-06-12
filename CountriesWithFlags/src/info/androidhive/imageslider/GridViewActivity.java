@@ -18,7 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,14 +31,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.code.album.PhotosList;
 import com.code.home.AlbumsList;
+import com.code.home.Home;
+import com.code.home.HomeAdapter;
+import com.code.home.LoaderHome;
 import com.code.loop.R;
 import com.code.loop.Utilities;
 
@@ -61,6 +62,8 @@ public class GridViewActivity extends Activity {
 	private Button activity = null;
 	private Button group = null;
 	private ListView listview = null;
+	public static Map<String, Album_feeds> mapfeeds = null;
+	private ListView lv = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -161,6 +164,7 @@ public class GridViewActivity extends Activity {
 				mapdetails = new HashMap<String, Photodetails>();
 				map = new HashMap<String, PhotosList>();
 				urls = new ArrayList<String>();
+				mapfeeds = new HashMap<String, Album_feeds>();
 
 				// Utilities.dialog = ProgressDialog.show(Inalbum.this, "",
 				albumselected = (AlbumsList) getIntent().getExtras()
@@ -189,10 +193,21 @@ public class GridViewActivity extends Activity {
 							+ "albums/" + albumselected.getAlbumid()
 							+ "/details/").execute();
 
-					new RequestTask2(nameValuePairs, Utilities.urlapp
-							+ "albums/" + albumselected.getAlbumid()
-							+ "/details/").execute();
 				} // "Loading...", true);
+
+				ActionBar actionBar = getActionBar();
+				actionBar.setDisplayHomeAsUpEnabled(true);
+
+				RightDrawerAdapter rightdraweradapter = new RightDrawerAdapter(
+						this);
+				lv = (ListView) findViewById(R.id.lvrightdrawer);
+
+				Loaderrightdrawer loaderdrawer = new Loaderrightdrawer(
+						nameValuePairs, Utilities.urlapp + "albums/"
+								+ albumselected.getAlbumid() + "/get_details/",
+						this, rightdraweradapter, lv);
+				lv.setAdapter(rightdraweradapter);
+				loaderdrawer.execute();
 
 			} catch (Exception e) {
 				System.out.println("Error in the onCreateFullScrenView");

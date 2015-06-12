@@ -55,6 +55,7 @@ public class Utilities {
 	public static ProgressDialog dialog = null;// dialog box
 	private static int REQUEST_CAMERA = 501;
 	private static int SELECT_FILE = 502;
+	public static String phone = "";
 
 	public static String GetCountryZipCode(String ssid) {
 		Locale loc = new Locale("", ssid);
