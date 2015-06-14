@@ -3,7 +3,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     tools:context="com.example.kifeljaw.MainActivity"
     tools:ignore="MergeRootFrame" >
 
@@ -11,16 +10,15 @@
             <!-- Listview to display slider menu -->
  
         <RelativeLayout
-            android:layout_width="318dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black" >
+        >
 
             <ListView
                 android:id="@+id/lvrightdrawer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" >
+                android:layout_alignParentTop="true" >
 
             </ListView>
 

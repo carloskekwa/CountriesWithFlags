@@ -6,44 +6,36 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.14"
+        android:layout_height="46dp"
         android:paddingLeft="@dimen/activity_horizontal_margin" >
 
         <ImageView
             android:id="@+id/imgalbum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/subtitle"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/subtitle" />
+            android:layout_alignParentTop="true" />
 
         <TextView
             android:id="@+id/albumname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="18dp"
-            android:layout_toLeftOf="@+id/ago"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/imgalbum"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/albumname"
             android:layout_below="@+id/albumname"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/ago"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/subtitle"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="94dp"
-            android:text="TextView" />
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/imgalbum"
+             android:textColor="@color/gray"
+            android:text="TextView" 
+            android:textSize="11dp"/>
 
         <ImageButton
             android:id="@+id/imageView2"
@@ -51,8 +43,30 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/subtitle"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="34dp"
+            android:layout_marginRight="24dp"
             android:background="@drawable/directadd" />
+
+        <TextView
+            android:id="@+id/ago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/albumname"
+            android:layout_alignBottom="@+id/albumname"
+            android:layout_toRightOf="@+id/albumname"
+            android:text="TextView"
+            android:textColor="@color/gray"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/photonumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/subtitle"
+            android:layout_alignBottom="@+id/subtitle"
+            android:layout_toRightOf="@+id/subtitle"
+            android:text="TextView"
+            android:textColor="@color/gray"
+            android:textSize="11dp" />
 
     </RelativeLayout>
 

@@ -56,7 +56,7 @@ public class GridViewActivity extends Activity {
 	public static ArrayList<String> urls = null;
 	private int position = 0;
 	public static Map<String, Photodetails> mapdetails = null;
-	public static Map<String, String> contacts = null;
+
 	private MenuDrawer mDrawerright;
 	private MenuDrawer mDrawerleft;
 	private Button activity = null;
@@ -87,6 +87,8 @@ public class GridViewActivity extends Activity {
 			mDrawerright = MenuDrawer.attach(this, Position.RIGHT);
 			mDrawerright.setContentView(R.layout.activity_grid_view);
 			mDrawerright.setMenuView(R.layout.activity_menu);
+			mDrawerright.setMenuSize(600);
+
 			/*
 			 * getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 			 * getSlidingMenu()
@@ -117,44 +119,7 @@ public class GridViewActivity extends Activity {
 
 			});
 
-			contacts = new HashMap<String, String>();
-
-			contacts = Utilities.getAllContacts(this.getContentResolver());
-
-			Iterator iterator = contacts.entrySet().iterator();
-			contacts = new HashMap<String, String>();
-
-			while (iterator.hasNext()) {
-				@SuppressWarnings("rawtypes")
-				Map.Entry mapEntry = (Map.Entry) iterator.next();
-
-				String tmp = (String) mapEntry.getKey();
-				if (!tmp.trim().equals("")) {
-					tmp = tmp.replace("-", "");
-					tmp = tmp.replace(" ", "");
-					tmp = tmp.replace("#", "");
-					tmp = tmp.replace("(", "");
-					tmp = tmp.replace(")", "");
-					tmp = tmp.trim();
-					tmp = tmp.replaceAll("(?<=\\d) +(?=\\d)", "");
-					tmp = tmp.replace(" ", "");
-					tmp = tmp.replaceAll("\\s+", "");
-
-					if (tmp.substring(0, 2).equals("00")) {
-						tmp = tmp.substring(2, tmp.length());
-					} else if (tmp.substring(0, 1).equals("+")) {
-						tmp = tmp.substring(1, tmp.length());
-					} else if (tmp.substring(0, 1).equals("0")) {
-						tmp = tmp.substring(1, tmp.length());
-						tmp = Utilities.codecountry + tmp;
-					} else {
-						tmp = Utilities.codecountry + tmp;
-					}
-				}
-				System.out.println("tmp:" + tmp);
-				contacts.put(tmp, mapEntry.getValue().toString());
-
-			}
+			
 
 			gridView = (GridView) findViewById(R.id.grid_view);
 
@@ -340,6 +305,8 @@ public class GridViewActivity extends Activity {
 		}
 	}
 
+	// call the empty contactsync to get the numbers !
+	
 	class RequestTask2 extends AsyncTask<String, String, String> {
 
 		private String response = "";
@@ -354,11 +321,11 @@ public class GridViewActivity extends Activity {
 		@Override
 		protected String doInBackground(String... uri) {
 			// calling the database.
-			System.out.println(Utilities.urlapp + "albums/"
-					+ albumselected.getAlbumid() + "/get_details/");
+			System.out.println(Utilities.urlapp + "contactsync/");
 			try {
 				// here
-				response = Utilities.fetchGET(this.url);
+				response =  Utilities.postData(nameValuePairs,
+						Utilities.urlapp + "contactsync/");
 
 				// System.out.println("response:" + response);
 			} catch (Exception e) {
@@ -366,7 +333,8 @@ public class GridViewActivity extends Activity {
 				System.out.print("Error in the Parsing!");
 			}
 
-			return "";
+			System.out.println("empty call contactsync!");
+			return response;
 		}
 
 		@Override
@@ -375,7 +343,7 @@ public class GridViewActivity extends Activity {
 			// Do anything with response..
 
 			JSONObject a = null;
-			System.out.println("new request 2: " + response);
+			System.out.println("contactsync: " + response);
 
 		}
 

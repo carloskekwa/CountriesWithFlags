@@ -79,7 +79,7 @@ public class LoaderHome extends
 					System.out.println("member_list" + (j+1) +  ":" +membertmp.getString(j) ); 
 					arraymembers.add(membertmp.getString(j));
 				}
-
+				System.out.println("creatorphone LoaderHome:" + p.getString("_creatorphone"));
 				String _creatorphone = p.getString("_creatorphone");
 				String admin_phone = p.getString("admin_phone");
 				String createOn_epoch = p.getString("createOn_epoch");

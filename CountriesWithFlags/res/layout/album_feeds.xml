@@ -6,8 +6,24 @@
 
 <RelativeLayout
     android:layout_width="318dp"
-    android:layout_height="51dp"
+    android:layout_height="wrap_content"
     android:visibility="visible" >
+
+    <TextView
+        android:id="@+id/ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/action"
+        android:layout_toRightOf="@+id/imgstatus"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imgstatus"
+        android:text="TextView" />
 
     <ImageView
         android:id="@+id/imgstatus"
@@ -15,25 +31,9 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="21dp"
         android:visibility="visible" />
 
-    <TextView
-        android:id="@+id/action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imgstar"
-        android:layout_marginLeft="17dp"
-        android:layout_toRightOf="@+id/imgstar"
-        android:text="" />
-
-    <TextView
-        android:id="@+id/ago"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginLeft="17dp"
-        android:layout_toRightOf="@+id/imgstar"
-        android:text="" />
 </RelativeLayout>
 
 </LinearLayout>

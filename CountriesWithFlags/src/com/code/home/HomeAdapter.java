@@ -1,8 +1,10 @@
 package com.code.home;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ public class HomeAdapter extends ArrayAdapter<AlbumsList> {
 	private List<NameValuePair> nameValuePairs = null;
 	private ImageView imageview = null;
 	private ImageButton btnadd = null;
+	private TextView numberofphoto = null;
 
 	public HomeAdapter(Context context) {
 		super(context, android.R.layout.two_line_list_item);
@@ -52,11 +54,32 @@ public class HomeAdapter extends ArrayAdapter<AlbumsList> {
 		agotxt = (TextView) convertView.findViewById(R.id.ago);
 		btnadd = (ImageButton) convertView.findViewById(R.id.imageView2);
 		imageview = (ImageView) convertView.findViewById(R.id.imgalbum);
-		h = new Holder(albumtxt, subtitletxt, agotxt, btnadd, imageview);
+		numberofphoto = (TextView) convertView.findViewById(R.id.photonumber);
+		h = new Holder(albumtxt, subtitletxt, agotxt, btnadd, imageview,numberofphoto);
 
 		final AlbumsList p = getItem(position);
 		System.out.println("adapter:" + p.getName());
 		h.albumname.setText(p.getName());
+		System.out.println(" p.get_creatorphone().toString().trim():" +  p.get_creatorphone().toString().trim()
+				+ " Utilities.phone.toString().trim():" +  Utilities.codecountry + Utilities.phone.toString().trim());
+		boolean isCreator = p.get_creatorphone().toString().trim().equals(Utilities.codecountry + Utilities.phone.toString().trim());
+	
+		if (isCreator){
+			h.subtitle.setText("You" + " . ");
+		}else{
+			if (Home.contacts.containsKey(p.get_creatorphone().toString().trim())){
+				System.out.println(p.get_creatorphone().toString().trim() + " creator :" + Home.contacts.get(p.get_creatorphone().toString().trim()) ) ;
+				h.subtitle.setText(Home.contacts.get(p.get_creatorphone().toString().trim()) + " . ");
+			}else{
+				h.subtitle.setText(Home.syncmap.get(p.get_creatorphone().toString().trim()) + " . ");
+			}	
+		}
+		
+		
+		
+		PrettyTime pretty = new PrettyTime();
+		h.ago.setText(pretty.format(new Date(Long.valueOf(p.getCreateOn_epoch()))));
+		h.numberofphoto.setText(p.getPhotos_count() +  " photos");
 		Picasso.with(getContext()).load(p.getAlbum_cover()).resize(120, 120)
 				.into(h.imageview);
 
@@ -156,14 +179,16 @@ public class HomeAdapter extends ArrayAdapter<AlbumsList> {
 		public TextView ago = null;
 		public ImageButton btnadd = null;
 		public ImageView imageview = null;
+		public TextView numberofphoto = null;
 
 		private Holder(TextView albumname, TextView subtitle, TextView ago,
-				ImageButton btnadd, ImageView imageview) {
+				ImageButton btnadd, ImageView imageview,TextView numberofphoto) {
 			this.albumname = albumname;
 			this.subtitle = subtitle;
 			this.ago = ago;
 			this.btnadd = btnadd;
 			this.imageview = imageview;
+			this.numberofphoto = numberofphoto;
 		}
 	}
 

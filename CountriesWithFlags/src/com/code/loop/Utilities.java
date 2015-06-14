@@ -63,6 +63,13 @@ public class Utilities {
 		return loc.getDisplayCountry().trim();
 	}
 
+	
+	
+
+	public static int daysBetween(long t1, long t2) {
+		return (int) ((t2 - t1) / (1000 * 60 * 60 * 24));
+	}
+	
 	/*
 	 * Ask button
 	 */

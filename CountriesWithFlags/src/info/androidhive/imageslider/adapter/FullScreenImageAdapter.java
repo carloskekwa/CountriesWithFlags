@@ -17,7 +17,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.code.home.Home;
 import com.code.loop.R;
+import com.code.loop.Utilities;
 import com.squareup.picasso.Picasso;
 
 public class FullScreenImageAdapter extends PagerAdapter {
@@ -86,9 +88,9 @@ public class FullScreenImageAdapter extends PagerAdapter {
 			long epoch = System.currentTimeMillis();
 			System.out.println("uploaded_by:" + uploaded_by);
 			System.out.println("Days difference = "
-					+ daysBetween(Long.valueOf(createdon), epoch));
-			ago.setText(daysBetween(Long.valueOf(createdon), epoch)
-					+ " ago by " + GridViewActivity.contacts.get(uploaded_by));
+					+ Utilities.daysBetween(Long.valueOf(createdon), epoch));
+			ago.setText(Utilities.daysBetween(Long.valueOf(createdon), epoch)
+					+ " ago by " + Home.contacts.get(uploaded_by));
 			ArrayList<String> viewedby = GridViewActivity.mapdetails.get(
 					_imagePaths.get(position)).getViewedby();
 			if (viewedby.size() == GridViewActivity.albumselected
@@ -106,9 +108,6 @@ public class FullScreenImageAdapter extends PagerAdapter {
 		return viewLayout;
 	}
 
-	private int daysBetween(long t1, long t2) {
-		return (int) ((t2 - t1) / (1000 * 60 * 60 * 24));
-	}
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
