@@ -61,7 +61,10 @@
         <activity
             android:name="info.androidhive.imageslider.FullScreenViewActivity">
         </activity>
-              
+                  <activity
+            android:name="info.androidhive.imageslider.Groupinfo">
+        </activity>  
+        
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.code.album;
 
-import info.androidhive.imageslider.FullScreenViewActivity;
 import info.androidhive.imageslider.adapter.FullScreenImageAdapter;
 
 import java.util.ArrayList;

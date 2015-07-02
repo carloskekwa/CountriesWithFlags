@@ -20,14 +20,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebView.FindListener;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.code.loop.R;
 import com.code.loop.Utilities;
@@ -41,7 +35,7 @@ public class LoaderHome extends
 	private List<AlbumsList> pendingalbum = null;
 	private String tmp = "";
 	private List<NameValuePair> nameValuePairs = null;
-	private Map<String, AlbumsList> mapalbumslist = null;
+
 	private ArrayList<String> notaccepted = null;
 	private ArrayList<String> accepted = null;
 	private ListView lv = null;
@@ -76,10 +70,12 @@ public class LoaderHome extends
 				ArrayList<String> arraymembers = new ArrayList<String>();
 
 				for (int j = 0; j < membertmp.length(); j++) {
-					System.out.println("member_list" + (j+1) +  ":" +membertmp.getString(j) ); 
+					System.out.println("member_list" + (j + 1) + ":"
+							+ membertmp.getString(j));
 					arraymembers.add(membertmp.getString(j));
 				}
-				System.out.println("creatorphone LoaderHome:" + p.getString("_creatorphone"));
+				System.out.println("creatorphone LoaderHome:"
+						+ p.getString("_creatorphone"));
 				String _creatorphone = p.getString("_creatorphone");
 				String admin_phone = p.getString("admin_phone");
 				String createOn_epoch = p.getString("createOn_epoch");
@@ -90,9 +86,9 @@ public class LoaderHome extends
 				int ucount = p.getInt("ucount");
 				String album_cover = p.getString("album_cover");
 
-				listalbum.add(new AlbumsList(arraymembers,_creatorphone, admin_phone,
-						createOn_epoch, albumid, name, photos_count,
-						modifiedOn_epoch, ucount, album_cover));
+				listalbum.add(new AlbumsList(arraymembers, _creatorphone,
+						admin_phone, createOn_epoch, albumid, name,
+						photos_count, modifiedOn_epoch, ucount, album_cover));
 
 			}
 		} catch (Exception e) {
@@ -106,19 +102,18 @@ public class LoaderHome extends
 			for (int i = 0; i < products.length(); i++) {
 				JSONObject p = products.getJSONObject(i);
 				ArrayList<String> arraymembers = new ArrayList<String>();
-				
-				try{
+
+				try {
 					JSONArray membertmp = p.getJSONArray("member_list");
-					
 
 					for (int j = 0; j < membertmp.length(); j++) {
-						System.out.println("member_list" + (j+1) +  ":" +membertmp.getString(j) ); 
+						System.out.println("member_list" + (j + 1) + ":"
+								+ membertmp.getString(j));
 						arraymembers.add(membertmp.getString(j));
 					}
-					
-				}catch(Exception e){
-					
-					
+
+				} catch (Exception e) {
+
 				}
 
 				String _creatorphone = p.getString("_creatorphone");
@@ -131,9 +126,9 @@ public class LoaderHome extends
 				int ucount = Integer.valueOf(p.getString("ucount"));
 				String album_cover = p.getString("album_cover");
 
-				pendingalbum.add(new AlbumsList(arraymembers,_creatorphone, admin_phone,
-						createOn_epoch, albumid, name, photos_count,
-						modifiedOn_epoch, ucount, album_cover));
+				pendingalbum.add(new AlbumsList(arraymembers, _creatorphone,
+						admin_phone, createOn_epoch, albumid, name,
+						photos_count, modifiedOn_epoch, ucount, album_cover));
 
 			}
 
@@ -148,28 +143,20 @@ public class LoaderHome extends
 	@Override
 	protected void onPostExecute(List<AlbumsList> products) {
 		super.onPostExecute(products);
-		mapalbumslist = new HashMap<String, AlbumsList>();
+
 		accepted = new ArrayList<String>();
 		notaccepted = new ArrayList<String>();
 		for (AlbumsList p : products) {
 			mAdapter.add(p);
-			mapalbumslist.put(p.getAlbumid(), p);
+			Home.mapalbumslist.put(p.getAlbumid(), p);
 		}
-		
-		
-		
-		
 
 		if (products.size() == 0) {
 			((Home) mContext).setContentView(R.layout.home);
 		} else {
 			// mAdapter.setFooter("No More Items");
 		}
-		
-		
-		
-		
-		
+
 		Utilities.dialog.dismiss();
 		mAdapter.notifyDataSetChanged();
 		for (AlbumsList p : pendingalbum) {
@@ -184,11 +171,8 @@ public class LoaderHome extends
 		Utilities.dialog = ProgressDialog
 				.show(mContext, "", "Loading...", true);
 
-
 		Utilities.dialog.dismiss();
 		System.out.println("finishLoader Task OnPost");
-		
-		
 
 	}
 

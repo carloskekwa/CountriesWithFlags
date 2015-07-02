@@ -31,8 +31,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.code.home.AlbumsList;
-import com.code.home.HomeAdapter;
-import com.code.home.LoaderHome;
 import com.code.loop.R;
 import com.code.loop.Utilities;
 

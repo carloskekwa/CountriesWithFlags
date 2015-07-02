@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import net.simonvt.menudrawer.Position;
 
 import org.apache.http.NameValuePair;
 

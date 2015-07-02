@@ -3,6 +3,7 @@ package info.androidhive.imageslider.helper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;

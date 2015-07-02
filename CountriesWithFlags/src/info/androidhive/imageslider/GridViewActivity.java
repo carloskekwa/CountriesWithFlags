@@ -6,7 +6,6 @@ import info.androidhive.imageslider.helper.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +37,6 @@ import android.widget.ListView;
 import com.code.album.PhotosList;
 import com.code.home.AlbumsList;
 import com.code.home.Home;
-import com.code.home.HomeAdapter;
-import com.code.home.LoaderHome;
 import com.code.loop.R;
 import com.code.loop.Utilities;
 
@@ -64,7 +61,24 @@ public class GridViewActivity extends Activity {
 	private ListView listview = null;
 	public static Map<String, Album_feeds> mapfeeds = null;
 	private ListView lv = null;
+	private Bundle bundle = null;
+	static ArrayList<Activity> activities = new ArrayList<Activity>();
+	
+	public static void finishAll() {
+		Home.comingfromGrid = true;
+		for (Activity activity : GridViewActivity.activities)
+			activity.finish();
+			
+	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		this.finish(); // or do something else
+	}
+	
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,7 +94,7 @@ public class GridViewActivity extends Activity {
 		} catch (Exception e) {
 
 		}
-
+	
 		try {
 
 			setContentView(R.layout.activity_grid_view);
@@ -88,7 +102,7 @@ public class GridViewActivity extends Activity {
 			mDrawerright.setContentView(R.layout.activity_grid_view);
 			mDrawerright.setMenuView(R.layout.activity_menu);
 			mDrawerright.setMenuSize(600);
-
+			GridViewActivity.activities.add(this);
 			/*
 			 * getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 			 * getSlidingMenu()
@@ -113,13 +127,13 @@ public class GridViewActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					// mDrawerleft.openMenu();
+					Intent i = new Intent(getApplicationContext(),Groupinfo.class);
+				
+					startActivity(i);
+					
 				}
 
 			});
-
-			
 
 			gridView = (GridView) findViewById(R.id.grid_view);
 
@@ -134,6 +148,10 @@ public class GridViewActivity extends Activity {
 				// Utilities.dialog = ProgressDialog.show(Inalbum.this, "",
 				albumselected = (AlbumsList) getIntent().getExtras()
 						.getSerializable("albumcreated");
+
+				bundle = new Bundle();
+				bundle.putSerializable("albumcreated", albumselected);
+
 				boolean isCreated = getIntent().getBooleanExtra("isCreated",
 						false);
 				setTitle(albumselected.getName());
@@ -258,6 +276,8 @@ public class GridViewActivity extends Activity {
 			return "";
 		}
 
+		
+		
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
@@ -306,7 +326,7 @@ public class GridViewActivity extends Activity {
 	}
 
 	// call the empty contactsync to get the numbers !
-	
+
 	class RequestTask2 extends AsyncTask<String, String, String> {
 
 		private String response = "";
@@ -324,8 +344,8 @@ public class GridViewActivity extends Activity {
 			System.out.println(Utilities.urlapp + "contactsync/");
 			try {
 				// here
-				response =  Utilities.postData(nameValuePairs,
-						Utilities.urlapp + "contactsync/");
+				response = Utilities.postData(nameValuePairs, Utilities.urlapp
+						+ "contactsync/");
 
 				// System.out.println("response:" + response);
 			} catch (Exception e) {

@@ -1,7 +1,5 @@
 package com.code.loop;
 
-import info.androidhive.imageslider.GridViewActivity;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +34,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.View;

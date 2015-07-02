@@ -24,7 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.code.list.EntryItem;
 import com.code.loop.R;
 import com.code.loop.Utilities;
 
@@ -33,7 +32,9 @@ public class Home extends Activity {
 	private ListView lv = null;
 	public static Map<String, String> syncmap = null;
 	public static Map<String, String> contacts = null;
-	
+	public static Map<String, AlbumsList> mapalbumslist = null;
+	public static boolean comingfromGrid = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public class Home extends Activity {
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			syncmap = new Hashtable<String, String>();
-			
+			mapalbumslist = new HashMap<String, AlbumsList>();
 			contacts = new HashMap<String, String>();
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
@@ -53,7 +54,7 @@ public class Home extends Activity {
 
 			new RequestTask2(nameValuePairs, Utilities.urlapp + "contactsync/")
 					.execute();
-			
+
 			contacts = Utilities.getAllContacts(this.getContentResolver());
 
 			Iterator iterator = contacts.entrySet().iterator();
@@ -98,7 +99,7 @@ public class Home extends Activity {
 			LoaderHome loadhome = new LoaderHome(this, mAdapter, lv);
 			lv.setAdapter(mAdapter);
 			loadhome.execute();
-		
+
 		} catch (Exception e) {
 			System.out.println("Error listview");
 		}
@@ -110,6 +111,22 @@ public class Home extends Activity {
 		inflater.inflate(R.menu.main, menu);
 
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (comingfromGrid == true) {
+			comingfromGrid = false;
+			Utilities.dialog = ProgressDialog.show(Home.this, "", "Loading...",
+					true);
+			final HomeAdapter mAdapter = new HomeAdapter(this);
+			lv = (ListView) findViewById(R.id.listView);
+
+			LoaderHome loadhome = new LoaderHome(this, mAdapter, lv);
+			lv.setAdapter(mAdapter);
+			loadhome.execute();
+		}
 	}
 
 	/**

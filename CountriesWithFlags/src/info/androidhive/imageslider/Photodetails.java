@@ -1,7 +1,6 @@
 package info.androidhive.imageslider;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Photodetails {
 

@@ -27,8 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.code.*;
-
 public class FourDigit extends Activity {
 
 	private Context context = null;
