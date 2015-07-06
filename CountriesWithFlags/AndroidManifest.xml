@@ -64,6 +64,9 @@
                   <activity
             android:name="info.androidhive.imageslider.Groupinfo">
         </activity>  
+         <activity
+            android:name="com.code.uploadphoto.MainActivity">
+        </activity> 
         
     </application>
 

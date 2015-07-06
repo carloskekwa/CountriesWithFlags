@@ -63,12 +63,12 @@ public class GridViewActivity extends Activity {
 	private ListView lv = null;
 	private Bundle bundle = null;
 	static ArrayList<Activity> activities = new ArrayList<Activity>();
-	
+
 	public static void finishAll() {
 		Home.comingfromGrid = true;
 		for (Activity activity : GridViewActivity.activities)
 			activity.finish();
-			
+
 	}
 
 	@Override
@@ -76,9 +76,7 @@ public class GridViewActivity extends Activity {
 		super.onBackPressed();
 		this.finish(); // or do something else
 	}
-	
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,7 +92,7 @@ public class GridViewActivity extends Activity {
 		} catch (Exception e) {
 
 		}
-	
+
 		try {
 
 			setContentView(R.layout.activity_grid_view);
@@ -127,10 +125,11 @@ public class GridViewActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					Intent i = new Intent(getApplicationContext(),Groupinfo.class);
-				
+					Intent i = new Intent(getApplicationContext(),
+							Groupinfo.class);
+
 					startActivity(i);
-					
+
 				}
 
 			});
@@ -232,9 +231,11 @@ public class GridViewActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.newphoto:
 			// Go to picture or the other one !
-			// Intent i = new Intent(getApplicationContext(), Display.class);
-			// startActivity(i);
-			Utilities.selectImage(GridViewActivity.this);
+
+			Intent i = new Intent(getApplicationContext(),
+					com.code.uploadphoto.MainActivity.class);
+			startActivity(i);
+			// Utilities.selectImage(GridViewActivity.this);
 			return true;
 		case android.R.id.home:
 			this.finish();
@@ -276,8 +277,6 @@ public class GridViewActivity extends Activity {
 			return "";
 		}
 
-		
-		
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);

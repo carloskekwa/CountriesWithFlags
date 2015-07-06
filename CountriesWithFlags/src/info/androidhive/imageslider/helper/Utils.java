@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import com.code.loop.R;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,11 +29,6 @@ public class Utils {
 	
 	public ArrayList<String> getFilesPaths(){
 		
-		
-		
-		
-		
-		
 		return null;
 		
 	}
@@ -54,13 +51,13 @@ public class Utils {
 
 			// Check for count
 			if (listFiles.length > 0) {
-
+				filePaths.add(String.valueOf(R.drawable.ad));
 				// loop through all files
 				for (int i = 0; i < listFiles.length; i++) {
 
 					// get file path
 					String filePath = listFiles[i].getAbsolutePath();
-
+					
 					// check for supported file extension
 					if (IsSupportedFile(filePath)) {
 						// Add image path to array list
