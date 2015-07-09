@@ -7,6 +7,12 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="23" />
+    
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -66,7 +72,13 @@
         </activity>  
          <activity
             android:name="com.code.uploadphoto.MainActivity">
-        </activity> 
+        </activity>
+        
+                 <activity
+            android:name="nl.changer.polypicker.ImagePickerActivity"
+            android:configChanges="mcc|mnc|touchscreen|orientation|uiMode|screenSize|keyboardHidden"
+            android:theme="@style/AppTheme" />
+                 
         
     </application>
 

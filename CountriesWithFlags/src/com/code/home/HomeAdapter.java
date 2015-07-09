@@ -89,7 +89,12 @@ public class HomeAdapter extends ArrayAdapter<AlbumsList> {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				Utilities.selectImage(context);
+				Intent i = new Intent(context,
+						com.code.uploadphoto.MainActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("albumcreated", p);
+				i.putExtras(bundle);
+				context.startActivity(i);
 
 			}
 

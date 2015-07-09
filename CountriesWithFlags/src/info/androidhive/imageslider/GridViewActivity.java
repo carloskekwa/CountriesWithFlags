@@ -234,6 +234,7 @@ public class GridViewActivity extends Activity {
 
 			Intent i = new Intent(getApplicationContext(),
 					com.code.uploadphoto.MainActivity.class);
+			i.putExtras(bundle);
 			startActivity(i);
 			// Utilities.selectImage(GridViewActivity.this);
 			return true;
@@ -281,7 +282,6 @@ public class GridViewActivity extends Activity {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// Do anything with response..
-
 			JSONObject a = null;
 			try {
 				a = new JSONObject(response);

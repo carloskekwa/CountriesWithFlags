@@ -79,20 +79,17 @@ public class GridViewImageAdapter extends BaseAdapter {
 		// image view click listener
 		imageView.setOnClickListener(new OnImageClickListener(position));
 
-		System.out.println("contains:"
-				+ _filePaths.get(
-						position).toString());
+		System.out.println("contains:" + _filePaths.get(position).toString());
 
 		if (!(GridViewActivity.mapdetails.containsKey(_filePaths.get(position)
-			.toString().trim()))) {
+				.toString().trim()))) {
 
-			
 			new RequestTask(Utilities.urlapp
-				+ "photos/"
+					+ "photos/"
 					+ GridViewActivity.map.get(_filePaths.get(position))
-							.getId() + "/view/",position).execute();
+							.getId() + "/view/", position).execute();
 
-		}else{
+		} else {
 			System.out.println("Map Contains key");
 		}
 		return imageView;
@@ -149,12 +146,12 @@ public class GridViewImageAdapter extends BaseAdapter {
 	// RequestTask that load picture details.
 
 	class RequestTask extends AsyncTask<String, String, String> {
-		
+
 		private int position = 0;
 		private String response = "";
 		private String url = "";
 
-		public RequestTask(String Url,int position) {
+		public RequestTask(String Url, int position) {
 			this.url = Url;
 			this.position = position;
 		}
@@ -177,43 +174,42 @@ public class GridViewImageAdapter extends BaseAdapter {
 			// Do anything with response..
 
 			JSONObject a = null;
-			
-			
+
 			try {
-				
+
 				a = new JSONObject(response);
 				JSONObject b = a.getJSONObject("photo");
 				System.out.println(b.getString("media_url").trim());
-				System.out.println("Urladded to mapdetails:" + 	_filePaths.get(position) );
+				System.out.println("Urladded to mapdetails:"
+						+ _filePaths.get(position));
 				ArrayList<comments> comment = null;
 				comment = new ArrayList<comments>();
-				try{
-				JSONArray c = b.getJSONArray("comments");
-				
-				for (int z = 0; z < c.length(); z++) {
-					JSONObject tmp = c.getJSONObject(z);
-					comment.add(new comments(tmp.getString("_id"), tmp
-							.getString("comment"), tmp
-							.getString("commented_by"), tmp
-							.getString("createdOn_epoch")));
+				try {
+					JSONArray c = b.getJSONArray("comments");
+
+					for (int z = 0; z < c.length(); z++) {
+						JSONObject tmp = c.getJSONObject(z);
+						comment.add(new comments(tmp.getString("_id"), tmp
+								.getString("comment"), tmp
+								.getString("commented_by"), tmp
+								.getString("createdOn_epoch")));
+					}
+				} catch (Exception e) {
+
 				}
-				}catch (Exception e){
-					
-				}
-				
+
 				JSONArray d = null;
 				ArrayList<String> viewedby = new ArrayList<String>();
-				try{
+				try {
 					d = b.getJSONArray("viewedby");
-				for (int j = 0; j < d.length(); j++) {
-					JSONObject tmp = d.getJSONObject(j);
-					viewedby.add(tmp.getString("phone"));
+					for (int j = 0; j < d.length(); j++) {
+						JSONObject tmp = d.getJSONObject(j);
+						viewedby.add(tmp.getString("phone"));
+					}
+				} catch (Exception e) {
+
 				}
-				}catch(Exception e){
-					
-				}
-				
-				
+
 				GridViewActivity.mapdetails.put(
 						b.getString("thumb_path").trim(),
 						new Photodetails(b.getString("id"), b
@@ -224,15 +220,15 @@ public class GridViewImageAdapter extends BaseAdapter {
 										.getString("album"), b
 										.getString("caption"), b
 										.getString("media_url"), b
-										
-										.getString("thumb_path"), comment,
-								viewedby));
+
+								.getString("thumb_path"), comment, viewedby));
 				Utilities.dialog.dismiss();
 
 			} catch (JSONException e) {
 				Utilities.dialog.dismiss();
 				// TODO Auto-generated catch block
-				System.out.println("error in the parsing GridViewImageAdapter!");
+				System.out
+						.println("error in the parsing GridViewImageAdapter!");
 				e.printStackTrace();
 			}
 		}
