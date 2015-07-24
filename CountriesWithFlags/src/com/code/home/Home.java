@@ -13,27 +13,51 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.code.loop.R;
 import com.code.loop.Utilities;
 
-public class Home extends Activity {
+public class Home extends Activity implements
+		android.widget.SearchView.OnQueryTextListener {
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		// this is your adapter that will be filtered
+		System.out.println("newText:" + newText);
+		mAdapter.getFilter().filter(newText);
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	private ListView lv = null;
 	public static Map<String, String> syncmap = null;
 	public static Map<String, String> contacts = null;
 	public static Map<String, AlbumsList> mapalbumslist = null;
 	public static boolean comingfromGrid = false;
+	private HomeAdapter mAdapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +117,24 @@ public class Home extends Activity {
 			}
 			Utilities.dialog = ProgressDialog.show(Home.this, "", "Loading...",
 					true);
-			final HomeAdapter mAdapter = new HomeAdapter(this);
+			mAdapter = new HomeAdapter(this);
 			lv = (ListView) findViewById(R.id.listView);
 
 			LoaderHome loadhome = new LoaderHome(this, mAdapter, lv);
 			lv.setAdapter(mAdapter);
+			
+			lv.setOnItemClickListener(new OnItemClickListener() {
+
+				@SuppressLint({ "NewApi", "DefaultLocale" })
+				public void onItemClick(AdapterView<?> a, View v, int position,
+						long id)
+
+				{
+					System.out.println("caros");
+				}
+
+			});
+
 			loadhome.execute();
 
 		} catch (Exception e) {
@@ -110,6 +147,15 @@ public class Home extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(
+				R.id.menu_item_search).getActionView();
+
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		// searchView.setSubmitButtonEnabled(true);
+		searchView.setOnQueryTextListener(this);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -120,7 +166,7 @@ public class Home extends Activity {
 			comingfromGrid = false;
 			Utilities.dialog = ProgressDialog.show(Home.this, "", "Loading...",
 					true);
-			final HomeAdapter mAdapter = new HomeAdapter(this);
+			mAdapter = new HomeAdapter(this);
 			lv = (ListView) findViewById(R.id.listView);
 
 			LoaderHome loadhome = new LoaderHome(this, mAdapter, lv);
@@ -211,4 +257,5 @@ public class Home extends Activity {
 		}
 
 	}
+
 }

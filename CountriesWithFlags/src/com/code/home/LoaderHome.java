@@ -156,7 +156,7 @@ public class LoaderHome extends
 		} else {
 			// mAdapter.setFooter("No More Items");
 		}
-
+		mAdapter.setArrays();
 		Utilities.dialog.dismiss();
 		mAdapter.notifyDataSetChanged();
 		for (AlbumsList p : pendingalbum) {
