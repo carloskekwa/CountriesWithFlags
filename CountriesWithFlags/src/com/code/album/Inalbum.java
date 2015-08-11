@@ -148,8 +148,6 @@ public class Inalbum extends Activity {
 			return true;
 		case android.R.id.home:
 			this.finish();
-			// Do stuff
-
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -34,7 +34,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
 			ArrayList<String> imagePaths) {
 		this._activity = activity;
 		this._imagePaths = imagePaths;
-}
+	}
 
 	@Override
 	public int getCount() {
@@ -52,8 +52,6 @@ public class FullScreenImageAdapter extends PagerAdapter {
 		Button btnClose;
 		TextView ago;
 		TextView seen;
-	
-		
 
 		inflater = (LayoutInflater) _activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,25 +59,16 @@ public class FullScreenImageAdapter extends PagerAdapter {
 				container, false);
 
 		imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
-		btnClose = (Button) viewLayout.findViewById(R.id.btnClose);
-		ago = (TextView) viewLayout.findViewById(R.id.ago);
+
 		seen = (TextView) viewLayout.findViewById(R.id.seen);
 
 		System.out.println("url::" + _imagePaths.get(position));
 		Picasso.with(_activity).load(_imagePaths.get(position))
 				.into(imgDisplay);
-		
-
-		// close button click event
-		btnClose.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				_activity.finish();
-			}
-		});
 
 		if (GridViewActivity.mapdetails.containsKey(_imagePaths.get(position))) {
-		//_activity.setTitle(GridViewActivity.map.get(_imagePaths.get(position)).getCount() + " of " + (getCount() - 1));
+			// _activity.setTitle(GridViewActivity.map.get(_imagePaths.get(position)).getCount()
+			// + " of " + (getCount() - 1));
 			String uploaded_by = GridViewActivity.mapdetails.get(
 					_imagePaths.get(position)).getUploaded_by();
 			String createdon = GridViewActivity.mapdetails.get(
@@ -89,8 +78,6 @@ public class FullScreenImageAdapter extends PagerAdapter {
 			System.out.println("uploaded_by:" + uploaded_by);
 			System.out.println("Days difference = "
 					+ Utilities.daysBetween(Long.valueOf(createdon), epoch));
-			ago.setText(Utilities.daysBetween(Long.valueOf(createdon), epoch)
-					+ " ago by " + Home.contacts.get(uploaded_by));
 			ArrayList<String> viewedby = GridViewActivity.mapdetails.get(
 					_imagePaths.get(position)).getViewedby();
 			if (viewedby.size() == GridViewActivity.albumselected
@@ -107,7 +94,6 @@ public class FullScreenImageAdapter extends PagerAdapter {
 		((ViewPager) container).addView(viewLayout);
 		return viewLayout;
 	}
-
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {

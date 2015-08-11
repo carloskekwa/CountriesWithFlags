@@ -25,4 +25,10 @@ public class SectionItem implements Item{
 		
 	}
 
+	@Override
+	public String getSubtitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

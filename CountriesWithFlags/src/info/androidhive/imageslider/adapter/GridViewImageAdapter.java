@@ -59,11 +59,11 @@ public class GridViewImageAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ImageView imageView;
+		com.joooonho.SelectableRoundedImageView imageView;
 		if (convertView == null) {
-			imageView = new ImageView(_activity);
+			imageView = new com.joooonho.SelectableRoundedImageView(_activity);
 		} else {
-			imageView = (ImageView) convertView;
+			imageView = (com.joooonho.SelectableRoundedImageView) convertView;
 		}
 
 		// get screen dimensions
@@ -73,13 +73,16 @@ public class GridViewImageAdapter extends BaseAdapter {
 		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		imageView.setLayoutParams(new GridView.LayoutParams(imageWidth,
 				imageWidth));
+		imageView.setPadding(10, 10, 10, 10);
+		imageView.setCornerRadiiDP(16, 16, 16, 16);
 		// imageView.setImageBitmap(image);
+		
 		Picasso.with(_activity).load(_filePaths.get(position)).into(imageView);
-
+		
 		// image view click listener
 		imageView.setOnClickListener(new OnImageClickListener(position));
 
-		System.out.println("contains:" + _filePaths.get(position).toString());
+		System.out.println("contains::" + _filePaths.get(position).toString());
 
 		if (!(GridViewActivity.mapdetails.containsKey(_filePaths.get(position)
 				.toString().trim()))) {

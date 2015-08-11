@@ -12,6 +12,22 @@ public class EntryItem implements Item{
 		this.subtitle = subtitle;
 	}
 	
+	
+	public String getTitle() {
+		return title;
+	}
+
+
+	public String getSubtitle() {
+		return subtitle;
+	}
+
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+
 	@Override
 	public boolean isSection() {
 		return false;

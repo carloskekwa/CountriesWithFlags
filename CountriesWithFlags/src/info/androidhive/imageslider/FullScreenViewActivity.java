@@ -10,6 +10,7 @@ import java.util.Map;
 import net.simonvt.menudrawer.MenuDrawer;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -40,8 +41,9 @@ public class FullScreenViewActivity extends Activity {
 	private ArrayList<String> urls = null;
 	public static int position = -1;
 	public static boolean flag = false;
-    private MenuDrawer mDrawer;
+	private MenuDrawer mDrawer;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,17 +65,18 @@ public class FullScreenViewActivity extends Activity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 
 			setContentView(R.layout.activity_fullscreen_view);
-			
-	      
+
 			viewPager = (ViewPager) findViewById(R.id.pager);
 
 			utils = new Utils(getApplicationContext());
 
 			Intent i = getIntent();
 			int position = i.getIntExtra("position", 0);
+
 			setTitle((position + 1) + " of "
-					+ String.valueOf(GridViewActivity.urls.size() - 1));
+					+ String.valueOf(GridViewActivity.urls.size()));
 			FullScreenViewActivity.position = position;
+
 			adapter = new FullScreenImageAdapter(FullScreenViewActivity.this,
 					GridViewActivity.urls);
 
@@ -88,10 +91,19 @@ public class FullScreenViewActivity extends Activity {
 						public void onPageSelected(int position) {
 							System.out.println("increment!");
 							FullScreenViewActivity.position = position + 1;
-							setTitle(FullScreenViewActivity.position
-									+ " of "
-									+ String.valueOf(GridViewActivity.urls
-											.size() - 1));
+
+							if ((position + 1) > GridViewActivity.urls.size() - 1) {
+								setTitle((position + 1)
+										+ " of "
+										+ String.valueOf(GridViewActivity.urls
+												.size()));
+							} else {
+								setTitle((position + 1)
+										+ " of "
+										+ String.valueOf(GridViewActivity.urls
+												.size()));
+							}
+
 						}
 
 						@Override
@@ -104,9 +116,6 @@ public class FullScreenViewActivity extends Activity {
 						}
 					});
 
-			
-
-	    
 			// "Loading...", true);
 
 		} catch (Exception e) {
@@ -127,13 +136,22 @@ public class FullScreenViewActivity extends Activity {
 
 		case R.id.coverphoto:
 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			new RequestTask(nameValuePairs, Utilities.urlapp
-					+ "albums/"
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+
+			nameValuePairs.add(new BasicNameValuePair("photo",
+					GridViewActivity.map.get(
+							GridViewActivity.urls
+									.get(FullScreenViewActivity.position))
+							.getId()));
+			System.out.println("photo:"
 					+ GridViewActivity.map.get(
 							GridViewActivity.urls
 									.get(FullScreenViewActivity.position))
-							.getId() + "/update_cover/").execute();
+							.getId());
+			System.out.println("nameValuePairs:" + nameValuePairs.get(0));
+			new RequestTask(nameValuePairs, Utilities.urlapp + "albums/"
+					+ GridViewActivity.albumselected.getAlbumid()
+					+ "/update_cover/").execute();
 			Utilities.dialog = ProgressDialog.show(FullScreenViewActivity.this,
 					"", "Updating your cover photo album...", true);
 			return true;
@@ -183,10 +201,7 @@ public class FullScreenViewActivity extends Activity {
 
 			try {
 				// here
-				List<NameValuePair> namevaluepairs = new ArrayList<NameValuePair>();
-				response = Utilities.postData(namevaluepairs,
-						this.url);
-
+				response = Utilities.postData(nameValuePairs, this.url);
 				System.out.println("response:" + response);
 			} catch (Exception e) {
 				// Log.e("EA_DEMO", "Error fetching product list", e);
@@ -200,7 +215,7 @@ public class FullScreenViewActivity extends Activity {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			// Do anything with response..
-
+			com.code.home.Home.comingfromGrid = true;
 			Utilities.dialog.dismiss();
 		}
 	}

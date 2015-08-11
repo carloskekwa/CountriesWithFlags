@@ -1,20 +1,23 @@
 package com.code.uploadphoto;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import com.code.home.AlbumsList;
-import com.code.home.Display;
-import com.code.loop.R;
+import java.util.List;
 
 import nl.changer.polypicker.ImagePickerActivity;
 import nl.changer.polypicker.utils.ImageInternalFetcher;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
@@ -26,10 +29,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import com.code.home.AlbumsList;
+import com.code.loop.R;
+import com.code.loop.Utilities;
 
 public class MainActivity extends FragmentActivity {
 
@@ -43,6 +49,7 @@ public class MainActivity extends FragmentActivity {
 	private ViewGroup mSelectedImagesContainer;
 	private ViewGroup mSelectedImagesNone;
 	HashSet<Uri> mMedia = new HashSet<Uri>();
+	private List<String> url = null;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,11 +68,34 @@ public class MainActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case R.id.addphotos:
 
-			Toast.makeText(
-					getApplicationContext(),
-					"Certainement elle va etre implementer, mais pas aujourd'hui",
-					5000).show();
-			;
+			View v = null;
+			Iterator<Uri> iterator = mMedia.iterator();
+			for (int i = 0; i < mSelectedImagesContainer.getChildCount(); i++) {
+				v = mSelectedImagesContainer.getChildAt(i);
+				TextView t = (TextView) v.findViewById(R.id.editText1);
+				System.out.println("Type: " + t.getText());
+
+				String tmp = url.get(i);
+
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+						5);
+				nameValuePairs.add(new BasicNameValuePair("photo1", tmp
+						.split(",")[0]));
+				nameValuePairs.add(new BasicNameValuePair("caption", t
+						.getText().toString()));
+				nameValuePairs.add(new BasicNameValuePair("albums", "[" + "\""
+						+ albumselected.getAlbumid() + "\"" + "]"));
+
+				String json = "{" + "\"photo1\":" + "{\"height\":"
+						+ tmp.split(",")[1] + ",\"width\":" + tmp.split(",")[2]
+						+ "}}";
+
+				nameValuePairs.add(new BasicNameValuePair("dimensions", json));
+
+				new RequestTask(nameValuePairs, Utilities.urlapp + "photos")
+						.execute();
+
+			}
 			return true;
 
 		case android.R.id.home:
@@ -114,13 +144,14 @@ public class MainActivity extends FragmentActivity {
 	protected void onActivityResult(int requestCode, int resuleCode,
 			Intent intent) {
 		super.onActivityResult(requestCode, resuleCode, intent);
-
+		System.out.println("parcelvalue:" + resuleCode);
 		if (resuleCode == Activity.RESULT_OK) {
 			if (requestCode == INTENT_REQUEST_GET_IMAGES
 					|| requestCode == INTENT_REQUEST_GET_N_IMAGES) {
 				Parcelable[] parcelableUris = intent
 						.getParcelableArrayExtra(ImagePickerActivity.EXTRA_IMAGE_URIS);
 
+				System.out.println("parcelvalue : " + parcelableUris);
 				if (parcelableUris == null) {
 					return;
 				}
@@ -139,14 +170,17 @@ public class MainActivity extends FragmentActivity {
 					showMedia();
 				}
 			}
+		} else if (resuleCode == Activity.RESULT_CANCELED) {
+			finish();
 		}
 	}
 
 	private void showMedia() {
+
+		url = new ArrayList<String>();
 		// Remove all views before
 		// adding the new ones.
 		mSelectedImagesContainer.removeAllViews();
-
 		Iterator<Uri> iterator = mMedia.iterator();
 		ImageInternalFetcher imageFetcher = new ImageInternalFetcher(this, 500);
 		while (iterator.hasNext()) {
@@ -170,11 +204,11 @@ public class MainActivity extends FragmentActivity {
 				// probably a relative uri
 				uri = Uri.fromFile(new File(uri.toString()));
 			}
-
+			System.out.println("uri:" + uri);
 			imageFetcher.loadImage(uri, thumbnail);
-
+			url.add(uri.toString() + "," + thumbnail.getHeight() + ","
+					+ thumbnail.getWidth());
 			mSelectedImagesContainer.addView(imageHolder);
-
 			// set the dimension to correctly
 			// show the image thumbnail.
 			int wdpx = (int) TypedValue.applyDimension(
@@ -187,4 +221,33 @@ public class MainActivity extends FragmentActivity {
 					.setLayoutParams(new LinearLayout.LayoutParams(wdpx, htpx));
 		}
 	}
+
+	class RequestTask extends AsyncTask<String, String, String> {
+
+		private List<NameValuePair> namevaluepairs = null;
+		private String url = "";
+
+		public RequestTask(List<NameValuePair> namevaluepairs, String url) {
+			this.namevaluepairs = namevaluepairs;
+			this.url = url;
+		}
+
+		String response = "";
+
+		@Override
+		protected String doInBackground(String... uri) {
+			response = Utilities.postMultipart(namevaluepairs, Utilities.urlapp
+					+ "photos/");
+			return response;
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			System.out.println("Response: " + response);
+		}
+
+	}
+
 }

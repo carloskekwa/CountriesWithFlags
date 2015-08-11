@@ -1,6 +1,7 @@
 package com.code.loop;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,7 +47,7 @@ public class Utilities {
 
 	public static String flagchoosen = "";
 	public static String codecountry = "";
-	public static String urlapp = "http://Prod.getloop.io/";
+	public static String urlapp = "http://dev.getloop.io/";
 	public static String deviceid = "";
 	public static String key = "";
 	public static ProgressDialog dialog = null;// dialog box
@@ -60,13 +61,10 @@ public class Utilities {
 		return loc.getDisplayCountry().trim();
 	}
 
-	
-	
-
 	public static int daysBetween(long t1, long t2) {
 		return (int) ((t2 - t1) / (1000 * 60 * 60 * 24));
 	}
-	
+
 	/*
 	 * Ask button
 	 */
@@ -83,7 +81,7 @@ public class Utilities {
 							public void onClick(
 									@SuppressWarnings("unused") final DialogInterface dialog,
 									@SuppressWarnings("unused") final int id) {
-
+								((Activity) context).finish();
 								((Activity) context).startActivity(i);
 							}
 						})
@@ -123,9 +121,61 @@ public class Utilities {
 		builder.show();
 
 	}
-/*
- * Post call
- */
+
+	public static String excutePost(String targetURL, String urlParameters) {
+		URL url;
+		HttpURLConnection connection = null;
+		try {
+			// Create connection
+			url = new URL(targetURL);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
+
+			connection.setRequestProperty("Content-Length",
+					"" + Integer.toString(urlParameters.getBytes().length));
+			connection.setRequestProperty("Content-Language", "en-US");
+
+			connection.setUseCaches(false);
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			// Send request
+			DataOutputStream wr = new DataOutputStream(
+					connection.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			// Get Response
+			InputStream is = connection.getInputStream();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+			String line;
+			StringBuffer response = new StringBuffer();
+			while ((line = rd.readLine()) != null) {
+				response.append(line);
+				response.append('\r');
+			}
+			rd.close();
+			return response.toString();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return null;
+
+		} finally {
+
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
+
+	/*
+	 * Post call
+	 */
 	public static String postData(List<NameValuePair> nameValuePairs, String url) {
 		// Create a new HttpClient and Post Header
 		HttpClient httpclient = new DefaultHttpClient();
@@ -138,9 +188,17 @@ public class Utilities {
 			// authorization
 			if (!Utilities.key.equals(""))
 				httppost.setHeader("Authorization", "Token " + Utilities.key);
+
+			if (url.contains("update_cover")) {
+				httppost.addHeader("Content-Type",
+						"application/x-www-form-urlencoded; text/html; charset=UTF-8");
+				System.out.println("contains update_cover");
+			}
 			System.out.println("postdata");
 			if (nameValuePairs != null)
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"UTF-8"));
+
 			// Execute HTTP Post Request
 			response = httpclient.execute(httppost);
 
@@ -186,7 +244,8 @@ public class Utilities {
 			MultipartEntity multipartEntity = new MultipartEntity(
 					HttpMultipartMode.BROWSER_COMPATIBLE);
 			for (int i = 0; i < nameValuePairs.size(); i++) {
-
+				System.out.println(nameValuePairs.get(i).getName() + "--"
+						+ nameValuePairs.get(i).getValue());
 				multipartEntity.addPart(nameValuePairs.get(i).getName(),
 						new StringBody(nameValuePairs.get(i).getValue()));
 			}
@@ -237,6 +296,7 @@ public class Utilities {
 		listView.setLayoutParams(params);
 		listView.requestLayout();
 	}
+
 	/*
 	 * Getcall
 	 */

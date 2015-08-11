@@ -16,7 +16,9 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -29,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.code.album.Inalbum;
@@ -39,13 +42,14 @@ import com.code.list.SectionItem;
 import com.code.loop.R;
 import com.code.loop.Utilities;
 
-public class Display extends ListActivity {
+public class Display extends ListActivity implements
+		android.widget.SearchView.OnQueryTextListener {
 	/** Called when the activity is first created. */
 	private List<String> name1 = null;
 	private List<String> phno1 = null;
 	private Map<String, String> contacts = null;
 	private Map<String, String> found = null;
-	private ArrayList<Item> items = new ArrayList<Item>();
+	public static ArrayList<Item> items = new ArrayList<Item>();
 	private EntryAdapter adapter = null;
 	public HashMap<String, String> checked = null;
 
@@ -57,7 +61,7 @@ public class Display extends ListActivity {
 		checked = new HashMap<String, String>();
 		Utilities.dialog = ProgressDialog.show(Display.this, "", "Loading...",
 				true);
-
+		items = new ArrayList<Item>();
 		name1 = new ArrayList<String>();
 		phno1 = new ArrayList<String>();
 		contacts = getAllContacts(this.getContentResolver());
@@ -93,6 +97,15 @@ public class Display extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menucreate, menu);
+
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(
+				R.id.menu_item_search_).getActionView();
+
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		// searchView.setSubmitButtonEnabled(true);
+		searchView.setOnQueryTextListener(this);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -225,9 +238,13 @@ public class Display extends ListActivity {
 						Map.Entry pair = (Map.Entry) it.next();
 
 						if (it.hasNext()) {
-							s += "\"" + pair.getKey().toString().replace("+", "") + "\" ,";
+							s += "\""
+									+ pair.getKey().toString().replace("+", "")
+									+ "\" ,";
 						} else {
-							s += "\"" + pair.getKey().toString().replace("+", "")+ "\"";
+							s += "\""
+									+ pair.getKey().toString().replace("+", "")
+									+ "\"";
 						}
 						it.remove();
 					}
@@ -340,8 +357,7 @@ public class Display extends ListActivity {
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					
-				
+
 					Utilities.dialog.dismiss();
 					Toast.makeText(getApplicationContext(),
 							"Something went wrong, please restart the app!",
@@ -367,14 +383,17 @@ public class Display extends ListActivity {
 					bundle.putSerializable("albumcreated", albumlist);
 					i.putExtra("isCreated", true);
 					i.putExtras(bundle);
+					finish();
+					Home.comingfromGrid = true;
 					startActivity(i);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					Utilities.dialog.dismiss();
-					
+
 					try {
-						System.out.println("err:" + a.getString("err").trim().equals("87"));
-						if ( a.getString("err").trim().equals("87")){
+						System.out.println("err:"
+								+ a.getString("err").trim().equals("87"));
+						if (a.getString("err").trim().equals("87")) {
 
 							Toast.makeText(
 									getApplicationContext(),
@@ -390,12 +409,25 @@ public class Display extends ListActivity {
 						e1.printStackTrace();
 					}
 
-			
-				
 				}
 
 			}
+			adapter.setArrays();
 		}
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		// this is your adapter that will be filtered
+		System.out.println("newText:" + newText);
+		adapter.getFilter().filter(newText);
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

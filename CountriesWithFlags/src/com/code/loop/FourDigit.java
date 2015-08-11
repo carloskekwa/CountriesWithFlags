@@ -253,7 +253,9 @@ public class FourDigit extends Activity {
 	        		if (Utilities.key != ""){
 	        			Utilities.phone = phone;
 	        			Intent i = new Intent(context,com.code.home.Home.class);
+	        			
 	        			startActivity(i);
+	        			finish();
 	        		}
 	        }
 	    }

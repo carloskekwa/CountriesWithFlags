@@ -66,7 +66,7 @@ public class Home extends Activity implements
 
 		try {
 			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
+			actionBar.setDisplayHomeAsUpEnabled(false);
 			syncmap = new Hashtable<String, String>();
 			mapalbumslist = new HashMap<String, AlbumsList>();
 			contacts = new HashMap<String, String>();
@@ -187,12 +187,6 @@ public class Home extends Activity implements
 
 			Intent i = new Intent(getApplicationContext(), Display.class);
 			startActivity(i);
-			return true;
-
-		case android.R.id.home:
-			this.finish();
-			// Do stuff
-
 			return true;
 
 		default:
