@@ -57,7 +57,6 @@ public class Utilities {
 
 	public static String GetCountryZipCode(String ssid) {
 		Locale loc = new Locale("", ssid);
-
 		return loc.getDisplayCountry().trim();
 	}
 

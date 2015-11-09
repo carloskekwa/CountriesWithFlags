@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="libs/httpclient-4.1.jar"/>
 	<classpathentry kind="lib" path="libs/httpmime-4.1.jar"/>
 	<classpathentry kind="lib" path="/Users/carloskekwa/Documents/CountriesWithFlags/CountriesWithFlags/libs/picasso-2.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/carloskekwa/Downloads/android-sdk-macosx/extras/android/support/v4/android-support-v4.jar" sourcepath="/android-support-v7-appcompat"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

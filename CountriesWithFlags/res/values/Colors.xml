@@ -13,7 +13,7 @@
     <color name="gray">#7F7F7F</color>
     
     
-      <color name="primary">#F44336</color>
+    <color name="primary">#F44336</color>
     <color name="primary_dark">#D32F2F</color>
     <color name="accent">#ffc400</color>
     <color name="text_primary">#FFFFFF</color>
